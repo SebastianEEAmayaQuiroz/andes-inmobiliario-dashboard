@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard Inmobiliario · Grupo Andes · Sebastián Amaya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f7f4ee;
+  --cream2:#ede9e0;
+  --cream3:#e2ddd2;
+  --ink:#1c1c18;
+  --ink2:#4a4a40;
+  --ink3:#8a8a78;
+  --ink4:#b8b8a4;
+  --emerald:#0f5c3a;
+  --emerald2:#1a7a4e;
+  --emerald3:#2e9e68;
+  --emerald-pale:#e8f2ec;
+  --emerald-border:rgba(15,92,58,0.2);
+  --gold:#b8963c;
+  --red:#8b2f2f;
+  --border:rgba(28,28,24,0.1);
+  --border2:rgba(28,28,24,0.18);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Outfit',sans-serif;
+  font-weight:400;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ─── TOPBAR ─── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  background:rgba(247,244,238,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 48px;
+  height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+@media(max-width:640px){.topbar{padding:0 20px}}
+.topbar-brand{
+  font-family:'Space Mono',monospace;
+  font-size:11px;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink);
+}
+.topbar-links{display:flex;gap:24px}
+.topbar-links a{
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink3);text-decoration:none;
+  transition:color 0.15s;
+}
+.topbar-links a:hover{color:var(--emerald)}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  padding-top:60px;
+}
+@media(max-width:860px){.hero{grid-template-columns:1fr;min-height:auto}}
+
+.hero-left{
+  background:var(--emerald);
+  padding:80px 64px 80px 48px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero-left::after{
+  content:'';
+  position:absolute;
+  bottom:-60px;right:-60px;
+  width:300px;height:300px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.hero-left::before{
+  content:'';
+  position:absolute;
+  top:-40px;left:-40px;
+  width:200px;height:200px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.04);
+}
+@media(max-width:860px){.hero-left{padding:80px 24px 48px}}
+
+.hero-overline{
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(255,255,255,0.5);
+  margin-bottom:28px;
+  display:flex;align-items:center;gap:12px;
+}
+.hero-overline::before{content:'';width:24px;height:1px;background:rgba(255,255,255,0.4)}
+
+h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(52px,6vw,82px);
+  font-weight:600;
+  line-height:1.0;
+  letter-spacing:-0.01em;
+  color:#fff;
+  margin-bottom:32px;
+}
+h1 em{font-style:italic;font-weight:300;color:rgba(255,255,255,0.75)}
+
+.hero-desc{
+  font-size:15px;color:rgba(255,255,255,0.6);
+  font-weight:300;max-width:420px;
+  margin-bottom:48px;line-height:1.7;
+}
+
+.hero-ctas{display:flex;flex-direction:column;gap:12px}
+.btn-white{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 24px;
+  background:#fff;
+  color:var(--emerald);
+  border-radius:3px;
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  text-decoration:none;
+  transition:opacity 0.15s,transform 0.1s;
+  width:fit-content;
+}
+.btn-white:hover{opacity:0.9;transform:translateX(3px)}
+.btn-outline-w{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 24px;
+  background:transparent;
+  color:rgba(255,255,255,0.8);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:3px;
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  text-decoration:none;
+  transition:background 0.15s,transform 0.1s;
+  width:fit-content;
+}
+.btn-outline-w:hover{background:rgba(255,255,255,0.08);transform:translateX(3px)}
+
+.hero-right{
+  background:var(--cream);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 48px 80px 64px;
+}
+@media(max-width:860px){.hero-right{padding:48px 24px 80px}}
+
+.hero-right-label{
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink3);
+  margin-bottom:32px;
+}
+
+/* ─── KPI STACK ─── */
+.kpi-stack{display:flex;flex-direction:column;gap:0}
+.kpi-row-item{
+  padding:24px 0;
+  border-bottom:1px solid var(--border);
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:16px;
+}
+.kpi-row-item:first-child{border-top:1px solid var(--border)}
+.kri-label{
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink4);
+  margin-bottom:4px;
+}
+.kri-val{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(28px,3vw,38px);
+  font-weight:600;
+  line-height:1;
+  color:var(--ink);
+}
+.kri-val.green{color:var(--emerald)}
+.kri-badge{
+  font-family:'Space Mono',monospace;
+  font-size:11px;font-weight:700;
+  padding:4px 10px;border-radius:2px;
+  white-space:nowrap;
+}
+.kri-badge.up{background:var(--emerald-pale);color:var(--emerald)}
+.kri-badge.neutral{background:var(--cream2);color:var(--ink3)}
+
+/* ─── SECTIONS ─── */
+.section{max-width:1100px;margin:0 auto;padding:96px 48px}
+@media(max-width:640px){.section{padding:64px 24px}}
+
+.section-tag{
+  font-family:'Space Mono',monospace;
+  font-size:10px;font-weight:700;
+  letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--emerald);
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-tag::after{content:'';flex:1;height:1px;background:var(--emerald-border);max-width:80px}
+
+h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,4vw,52px);
+  font-weight:600;
+  line-height:1.1;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  margin-bottom:48px;
+}
+h2 em{font-style:italic;font-weight:300;color:var(--emerald)}
+
+hr.divider{
+  border:none;border-top:1px solid var(--border);
+  max-width:1100px;margin:0 auto 0;
+  padding:0 48px;
+}
+@media(max-width:640px){hr.divider{padding:0 24px}}
+.divider-full{border:none;border-top:1px solid var(--border)}
+
+/* ─── VISTAS DEL DASHBOARD ─── */
+.views-tabs{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;background:var(--border);border:1px solid var(--border2);
+  border-radius:4px;overflow:hidden;
+  margin-bottom:48px;
+}
+@media(max-width:640px){.views-tabs{grid-template-columns:1fr}}
+.view-tab{
+  background:var(--cream);
+  padding:28px 28px 24px;
+  border-right:1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+  transition:background 0.2s;
+}
+.view-tab:last-child{border-right:none}
+.view-tab:hover{background:var(--cream2)}
+.view-tab::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:var(--emerald);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 0.3s;
+}
+.view-tab:hover::before{transform:scaleX(1)}
+.vt-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:48px;font-weight:700;
+  line-height:1;
+  color:var(--cream3);
+  margin-bottom:12px;
+}
+.vt-title{
+  font-family:'Outfit',sans-serif;
+  font-size:15px;font-weight:600;
+  color:var(--ink);margin-bottom:4px;
+}
+.vt-q{font-size:12px;color:var(--emerald);font-style:italic;margin-bottom:16px}
+.vt-items{display:flex;flex-direction:column;gap:7px}
+.vt-item{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:12px;color:var(--ink2);line-height:1.4;font-weight:300;
+}
+.vt-dot{width:4px;height:4px;border-radius:50%;background:var(--emerald);flex-shrink:0;margin-top:6px}
+.vt-filters{margin-top:16px;padding-top:14px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:5px}
+.ft{
+  background:var(--emerald-pale);color:var(--emerald);
+  border:1px solid var(--emerald-border);
+  padding:2px 8px;border-radius:2px;
+  font-family:'Space Mono',monospace;
+  font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+}
+
+/* ─── STAR SCHEMA ─── */
+.schema-wrap{
+  background:var(--ink);
+  border-radius:4px;
+  padding:48px;
+  display:grid;
+  grid-template-columns:1fr 1.6fr 1fr;
+  grid-template-rows:auto auto auto;
+  gap:0;
+  position:relative;
+}
+@media(max-width:720px){.schema-wrap{grid-template-columns:1fr;padding:28px 24px}}
+.schema-table{
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:3px;
+  padding:16px 18px;
+}
+.schema-table.fact{
+  background:rgba(15,92,58,0.3);
+  border-color:rgba(46,158,104,0.4);
+  grid-column:2;grid-row:2;
+  z-index:2;
+}
+.schema-table.dim-top{grid-column:2;grid-row:1;margin-bottom:2px}
+.schema-table.dim-left{grid-column:1;grid-row:2;margin-right:2px}
+.schema-table.dim-right{grid-column:3;grid-row:2;margin-left:2px}
+.st-label{
+  font-family:'Space Mono',monospace;
+  font-size:9px;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+  margin-bottom:6px;
+}
+.st-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:16px;font-weight:600;
+  color:#fff;
+  margin-bottom:4px;
+}
+.st-detail{font-size:11px;color:rgba(255,255,255,0.4);font-weight:300}
+.schema-table.fact .st-name{color:var(--emerald3)}
+.schema-legend{
+  grid-column:1/-1;grid-row:3;
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.08);
+  font-size:12px;color:rgba(255,255,255,0.35);
+  font-weight:300;
+  display:flex;gap:24px;flex-wrap:wrap;
+}
+
+/* ─── HALLAZGOS ─── */
+.findings{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2px;
+  background:var(--border);
+}
+@media(max-width:640px){.findings{grid-template-columns:1fr}}
+.finding{
+  background:var(--cream);
+  padding:36px;
+}
+.finding:hover{background:var(--cream2)}
+.f-tag{
+  font-family:'Space Mono',monospace;
+  font-size:9px;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--emerald);
+  margin-bottom:16px;
+  display:block;
+}
+.f-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:52px;font-weight:600;
+  line-height:1;
+  color:var(--ink);
+  margin-bottom:6px;
+}
+.f-num.g{color:var(--emerald)}
+.f-num.r{color:var(--red)}
+.f-unit{
+  font-family:'Space Mono',monospace;
+  font-size:10px;color:var(--ink4);
+  margin-bottom:14px;display:block;
+}
+.finding h3{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.3}
+.finding p{font-size:13px;color:var(--ink2);line-height:1.65;font-weight:300;margin-bottom:14px}
+.f-action{
+  border-left:2px solid var(--emerald);
+  padding:10px 14px;
+  font-size:12px;color:var(--ink2);line-height:1.5;
+  background:var(--emerald-pale);font-weight:300;
+}
+.f-action strong{color:var(--emerald);font-weight:600}
+
+/* ─── DAX CODE ─── */
+.dax-wrap{
+  background:var(--ink);
+  border-radius:4px;
+  overflow:hidden;
+}
+.dax-topbar{
+  background:rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:12px 20px;
+  display:flex;align-items:center;gap:8px;
+}
+.dax-dot{width:10px;height:10px;border-radius:50%}
+.dax-label{
+  margin-left:8px;
+  font-family:'Space Mono',monospace;
+  font-size:10px;color:rgba(255,255,255,0.3);
+  letter-spacing:0.1em;
+}
+.dax-body{padding:28px 32px}
+.dax-section{margin-bottom:28px}
+.dax-section:last-child{margin-bottom:0}
+.dax-comment{
+  font-family:'Space Mono',monospace;
+  font-size:12px;color:rgba(255,255,255,0.3);
+  margin-bottom:8px;display:block;
+}
+.dax-code{
+  font-family:'Space Mono',monospace;
+  font-size:12px;line-height:1.7;
+  color:#a8d8b8;
+}
+.dax-fn{color:#7ec8e3}
+.dax-var{color:#f0c070}
+.dax-str{color:#e0a0a0}
+.dax-num{color:#b8e0b0}
+
+/* ─── BREAKDOWN TABLE ─── */
+.breakdown-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:2px;background:var(--border);
+}
+@media(max-width:640px){.breakdown-grid{grid-template-columns:1fr}}
+.breakdown-card{
+  background:var(--cream);
+  padding:28px;
+}
+.bc-label{
+  font-family:'Space Mono',monospace;
+  font-size:9px;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.bc-label::after{content:'';flex:1;height:1px;background:var(--border2)}
+.bc-rows{display:flex;flex-direction:column;gap:12px}
+.bc-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.bc-name{font-size:13px;color:var(--ink);font-weight:500}
+.bc-bar-wrap{flex:1;height:4px;background:var(--cream3);border-radius:2px;overflow:hidden}
+.bc-bar{height:100%;border-radius:2px;background:var(--emerald)}
+.bc-pct{
+  font-family:'Space Mono',monospace;
+  font-size:11px;font-weight:700;color:var(--emerald);
+  min-width:36px;text-align:right;
+}
+
+/* ─── INSIGHTS ACCIONABLES ─── */
+.insights{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.insights{grid-template-columns:1fr}}
+.insight{
+  background:var(--cream);
+  border:1px solid var(--border2);
+  border-radius:3px;
+  padding:28px;
+  display:grid;
+  grid-template-columns:44px 1fr;
+  gap:16px;
+}
+.insight.featured{
+  background:var(--emerald);
+  border-color:var(--emerald);
+}
+.insight-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:36px;font-weight:600;
+  line-height:1;color:var(--cream3);
+}
+.insight.featured .insight-n{color:rgba(255,255,255,0.3)}
+.insight strong{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.insight.featured strong{color:#fff}
+.insight p{font-size:13px;color:var(--ink2);line-height:1.6;font-weight:300}
+.insight.featured p{color:rgba(255,255,255,0.65)}
+
+/* ─── FOOTER ─── */
+.footer{
+  background:var(--ink);
+  padding:72px 48px;
+}
+@media(max-width:640px){.footer{padding:48px 24px}}
+.footer-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr auto;
+  gap:40px;align-items:center;
+}
+@media(max-width:640px){.footer-inner{grid-template-columns:1fr}}
+.footer-t{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(26px,3vw,38px);
+  font-weight:600;color:#fff;
+  margin-bottom:6px;letter-spacing:-0.01em;
+}
+.footer-s{font-size:13px;color:rgba(255,255,255,0.35);font-weight:300}
+.footer-btns{display:flex;gap:10px;flex-wrap:wrap}
+.copyright{
+  max-width:1100px;margin:0 auto;
+  padding-top:28px;margin-top:40px;
+  border-top:1px solid rgba(255,255,255,0.07);
+  font-family:'Space Mono',monospace;
+  font-size:10px;color:rgba(255,255,255,0.2);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  letter-spacing:0.04em;
+}
+</style>
+</head>
+<body>
+
+<!-- ─── TOPBAR ─── -->
+<nav class="topbar">
+  <div class="topbar-brand">Grupo Andes · Inmobiliario</div>
+  <div class="topbar-links">
+    <a href="https://app.powerbi.com/view?r=eyJrIjoiOTk5NmVhYTQtNTUyMi00MGExLWIyNDItYjNkODkxYjVmNzQ0IiwidCI6ImY5NGJmNGQ5LTgwOTctNDc5NC1hZGY2LWE1NDY2Y2EyODU2MyIsImMiOjR9" target="_blank">Power BI</a>
+    <a href="https://colab.research.google.com/drive/1ExPBLFtuD6xTcBzFCy4YeweP5Rccl0B5?usp=sharing" target="_blank">Colab</a>
+    <a href="https://www.linkedin.com/in/sebastianamayada" target="_blank">LinkedIn</a>
+    <a href="https://github.com/SebastianEEAmayaQuiroz" target="_blank">GitHub</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<header class="hero">
+  <div class="hero-left">
+    <div class="hero-overline">Dashboard Ejecutivo · Power BI · 2023–2024</div>
+    <h1>Análisis<br>Comercial<br><em>Inmobiliario</em></h1>
+    <p class="hero-desc">Dashboard de tres vistas con modelo estrella, medidas DAX avanzadas y análisis de cohortes de clientes para Grupo Andes — Colombia y México.</p>
+    <div class="hero-ctas">
+      <a href="https://app.powerbi.com/view?r=eyJrIjoiOTk5NmVhYTQtNTUyMi00MGExLWIyNDItYjNkODkxYjVmNzQ0IiwidCI6ImY5NGJmNGQ5LTgwOTctNDc5NC1hZGY2LWE1NDY2Y2EyODU2MyIsImMiOjR9" target="_blank" class="btn-white">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h2v7H3zm4-7h2v14H7zm4 4h2v10h-2zm4-4h2v14h-2zm4 7h2v7h-2z"/></svg>
+        Ver Dashboard Power BI
+      </a>
+      <a href="https://colab.research.google.com/drive/1ExPBLFtuD6xTcBzFCy4YeweP5Rccl0B5?usp=sharing" target="_blank" class="btn-outline-w">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        Notebook de Planificación
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-right-label">Métricas del período</div>
+    <div class="kpi-stack">
+      <div class="kpi-row-item">
+        <div>
+          <div class="kri-label">Ingreso Total</div>
+          <div class="kri-val">$6,012,502,170</div>
+        </div>
+        <span class="kri-badge neutral">2023–2024</span>
+      </div>
+      <div class="kpi-row-item">
+        <div>
+          <div class="kri-label">Crecimiento YoY</div>
+          <div class="kri-val green">+11.1%</div>
+        </div>
+        <span class="kri-badge up">↑ 2023 → 2024</span>
+      </div>
+      <div class="kpi-row-item">
+        <div>
+          <div class="kri-label">Cantidad de Ventas</div>
+          <div class="kri-val">8,500</div>
+        </div>
+        <span class="kri-badge neutral">transacciones</span>
+      </div>
+      <div class="kpi-row-item">
+        <div>
+          <div class="kri-label">Ticket Promedio</div>
+          <div class="kri-val">$707,353</div>
+        </div>
+        <span class="kri-badge neutral">por venta</span>
+      </div>
+      <div class="kpi-row-item">
+        <div>
+          <div class="kri-label">Comisión Total</div>
+          <div class="kri-val">$200,627,166</div>
+        </div>
+        <span class="kri-badge neutral">generada</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="divider-full"></div>
+
+<!-- ─── VISTAS ─── -->
+<div class="section">
+  <div class="section-tag">Estructura del dashboard</div>
+  <h2>Tres vistas,<br><em>tres preguntas</em> de negocio</h2>
+  <div class="views-tabs">
+    <div class="view-tab">
+      <div class="vt-num">01</div>
+      <div class="vt-title">Overview Ejecutivo</div>
+      <div class="vt-q">¿Cómo está el negocio?</div>
+      <div class="vt-items">
+        <div class="vt-item"><div class="vt-dot"></div><span>4 KPIs: Ingreso, Ventas, Ticket, Comisión</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Tendencia de ventas mensual</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Ingresos por ciudad (Bogotá vs CDMX)</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Crecimiento Year over Year (YoY)</span></div>
+      </div>
+      <div class="vt-filters">
+        <span class="ft">Año</span><span class="ft">Ciudad</span>
+      </div>
+    </div>
+    <div class="view-tab">
+      <div class="vt-num">02</div>
+      <div class="vt-title">Análisis Comercial</div>
+      <div class="vt-q">¿Qué y quién genera más valor?</div>
+      <div class="vt-items">
+        <div class="vt-item"><div class="vt-dot"></div><span>Ingreso por tipo de propiedad</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Ventas por canal (Corredor vs Directo)</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Ventas por segmento de cliente</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Tabla semáforo con formato condicional</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Tooltips con % de participación (DAX)</span></div>
+      </div>
+      <div class="vt-filters">
+        <span class="ft">Tipo</span><span class="ft">Canal</span><span class="ft">Segmento</span>
+      </div>
+    </div>
+    <div class="view-tab">
+      <div class="vt-num">03</div>
+      <div class="vt-title">Análisis de Cohortes</div>
+      <div class="vt-q">¿Vuelven a comprar los clientes?</div>
+      <div class="vt-items">
+        <div class="vt-item"><div class="vt-dot"></div><span>Matriz: filas → Mes Cohorte</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Columnas → Mes de Venta</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Valores: Ventas o Ingreso Total</span></div>
+        <div class="vt-item"><div class="vt-dot"></div><span>Cohorte marzo 2023: máxima recurrencia</span></div>
+      </div>
+      <div class="vt-filters">
+        <span class="ft">Fecha</span><span class="ft">Segmento</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- ─── MODELO ESTRELLA ─── -->
+<div class="section">
+  <div class="section-tag">Modelado de datos</div>
+  <h2>Esquema <em>estrella</em><br>con cuatro tablas</h2>
+  <div class="schema-wrap">
+    <div class="schema-table dim-top" style="text-align:center">
+      <div class="st-label">Dimensión</div>
+      <div class="st-name">dim_fecha</div>
+      <div class="st-detail">732 registros · Año · Mes · Año-Mes</div>
+    </div>
+    <div class="schema-table dim-left" style="text-align:center">
+      <div class="st-label">Dimensión</div>
+      <div class="st-name">dim_clientes</div>
+      <div class="st-detail">3,500 registros · Segmento · País</div>
+    </div>
+    <div class="schema-table fact" style="text-align:center;padding:24px">
+      <div class="st-label">Tabla de hechos · Central</div>
+      <div class="st-name" style="font-size:20px">hecho_ventas_propiedades</div>
+      <div class="st-detail" style="color:rgba(255,255,255,0.55)">8,500 transacciones · precio_venta · monto_comision · canal_venta</div>
+    </div>
+    <div class="schema-table dim-right" style="text-align:center">
+      <div class="st-label">Dimensión</div>
+      <div class="st-name">dim_propiedades</div>
+      <div class="st-detail">8,000 registros · Tipo · Tamaño · Barrio</div>
+    </div>
+    <div class="schema-legend">
+      <span>Cardinalidad: 1:* (uno a muchos)</span>
+      <span>Dirección de filtro: Simple (single)</span>
+      <span>Todas las relaciones activas</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- ─── BREAKDOWN ─── -->
+<div class="section">
+  <div class="section-tag">Distribución del negocio</div>
+  <h2>¿Dónde se concentra<br><em>el ingreso?</em></h2>
+  <div class="breakdown-grid">
+    <div class="breakdown-card">
+      <div class="bc-label">Tipo de propiedad</div>
+      <div class="bc-rows">
+        <div class="bc-row">
+          <span class="bc-name">Casa</span>
+          <div class="bc-bar-wrap"><div class="bc-bar" style="width:100%"></div></div>
+          <span class="bc-pct">37.3%</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-name">Comercial</span>
+          <div class="bc-bar-wrap"><div class="bc-bar" style="width:85.8%"></div></div>
+          <span class="bc-pct">32.0%</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-name">Departamento</span>
+          <div class="bc-bar-wrap"><div class="bc-bar" style="width:82.3%"></div></div>
+          <span class="bc-pct">30.7%</span>
+        </div>
+      </div>
+    </div>
+    <div class="breakdown-card">
+      <div class="bc-label">Canal de venta</div>
+      <div class="bc-rows">
+        <div class="bc-row">
+          <span class="bc-name">Corredor</span>
+          <div class="bc-bar-wrap"><div class="bc-bar" style="width:100%"></div></div>
+          <span class="bc-pct">72.7%</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-name">Directo</span>
+          <div class="bc-bar-wrap"><div class="bc-bar" style="width:37.5%"></div></div>
+          <span class="bc-pct">27.3%</span>
+        </div>
+      </div>
+    </div>
+    <div class="breakdown-card">
+      <div class="bc-label">Segmento de cliente</div>
+      <div class="bc-rows">
+        <div class="bc-row">
+          <span class="bc-name">Primera vez</span>
+          <div class="bc-bar-wrap"><div class="bc-bar" style="width:100%"></div></div>
+          <span class="bc-pct">54.5%</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-name">Inversionista</span>
+          <div class="bc-bar-wrap"><div class="bc-bar" style="width:56.2%"></div></div>
+          <span class="bc-pct">30.6%</span>
+        </div>
+        <div class="bc-row">
+          <span class="bc-name">Alto patrimonio</span>
+          <div class="bc-bar-wrap"><div class="bc-bar" style="width:27.4%"></div></div>
+          <span class="bc-pct">14.9%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- ─── HALLAZGOS ─── -->
+<div class="section">
+  <div class="section-tag">Hallazgos principales</div>
+  <h2>Lo que revelan<br><em>8,500 transacciones</em></h2>
+  <div class="findings">
+    <div class="finding">
+      <span class="f-tag">Hallazgo 01 · Crecimiento</span>
+      <div class="f-num g">+11.1%</div>
+      <span class="f-unit">Crecimiento Year over Year</span>
+      <h3>El negocio crece de forma sostenida</h3>
+      <p>Los ingresos de 2024 superaron a los de 2023 en 11.1%. A diferencia del proyecto anterior, aquí el negocio está en expansión — señal positiva para decisiones de inversión y apertura de nuevos mercados.</p>
+      <div class="f-action"><strong>Acción:</strong> Capitalizar el momento con estrategias de expansión en Colombia, donde el volumen de clientes supera ligeramente a México.</div>
+    </div>
+    <div class="finding">
+      <span class="f-tag">Hallazgo 02 · Tipo de propiedad</span>
+      <div class="f-num">37.3%</div>
+      <span class="f-unit">Del ingreso total son Casas</span>
+      <h3>Casa lidera pero la distribución es equilibrada</h3>
+      <p>Las tres categorías tienen distribución de ingresos relativamente parejas: Casa (37.3%), Comercial (32.0%), Departamento (30.7%). Ninguna categoría domina de forma aplastante — el portafolio está diversificado.</p>
+      <div class="f-action"><strong>Acción:</strong> Mantener el equilibrio del portafolio. El segmento Comercial tiene margen de crecimiento dado su menor volumen de unidades pero alto valor unitario.</div>
+    </div>
+    <div class="finding">
+      <span class="f-tag">Hallazgo 03 · Canal de venta</span>
+      <div class="f-num">72.7%</div>
+      <span class="f-unit">De ventas por Corredor</span>
+      <h3>Corredor domina — pero a qué costo</h3>
+      <p>El canal Corredor concentra casi tres cuartas partes de las ventas. Genera más volumen, pero implica comisiones más altas que el canal Directo. La pregunta no es cuál vende más, sino cuál es más rentable en términos de margen neto.</p>
+      <div class="f-action"><strong>Acción:</strong> Comparar costo de comisión Corredor vs Directo. Si el canal Directo tiene margen neto mayor, destinar recursos a crecer ese canal.</div>
+    </div>
+    <div class="finding">
+      <span class="f-tag">Hallazgo 04 · Cohortes</span>
+      <div class="f-num g">Mar-23</div>
+      <span class="f-unit">Cohorte con mayor recurrencia</span>
+      <h3>La cohorte de marzo 2023 es la más valiosa</h3>
+      <p>Los clientes adquiridos en marzo 2023 muestran la mayor tasa de recompra. Entender qué los trajo y qué los retuvo puede informar toda la estrategia de adquisición futura.</p>
+      <div class="f-action"><strong>Acción:</strong> Analizar características de la cohorte marzo 2023 (canal, segmento, ciudad, tipo de propiedad) y replicar esas condiciones de adquisición.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- ─── DAX ─── -->
+<div class="section">
+  <div class="section-tag">Medidas DAX creadas</div>
+  <h2>Código que<br><em>responde preguntas</em></h2>
+  <div class="dax-wrap">
+    <div class="dax-topbar">
+      <div class="dax-dot" style="background:#ff5f57"></div>
+      <div class="dax-dot" style="background:#febc2e"></div>
+      <div class="dax-dot" style="background:#28c840"></div>
+      <span class="dax-label">medidas_andes_inmobiliario.dax</span>
+    </div>
+    <div class="dax-body">
+      <div class="dax-section">
+        <span class="dax-comment">-- Medidas base</span>
+        <div class="dax-code">
+          <span class="dax-var">Ingreso Total</span> = <span class="dax-fn">SUM</span>(hecho_ventas_propiedades[precio_venta])<br>
+          <span class="dax-var">Cantidad Ventas</span> = <span class="dax-fn">COUNTROWS</span>(hecho_ventas_propiedades)<br>
+          <span class="dax-var">Ticket Promedio</span> = <span class="dax-fn">DIVIDE</span>([Ingreso Total], [Cantidad Ventas], <span class="dax-num">0</span>)<br>
+          <span class="dax-var">Comisión Total</span> = <span class="dax-fn">SUM</span>(hecho_ventas_propiedades[monto_comision])
+        </div>
+      </div>
+      <div class="dax-section">
+        <span class="dax-comment">-- Medidas de participación con CALCULATE (contexto de filtro)</span>
+        <div class="dax-code">
+          <span class="dax-var">% Part. Tipo Propiedad</span> =<br>
+          &nbsp;&nbsp;<span class="dax-fn">DIVIDE</span>(<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;[Ingreso Total],<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="dax-fn">CALCULATE</span>([Ingreso Total], <span class="dax-fn">ALL</span>(hecho_ventas_propiedades[tipo_propiedad])),<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="dax-num">0</span><br>
+          &nbsp;&nbsp;)<br><br>
+          <span class="dax-var">% Part. Canal Venta</span> =<br>
+          &nbsp;&nbsp;<span class="dax-fn">DIVIDE</span>(<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;[Ingreso Total],<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="dax-fn">CALCULATE</span>([Ingreso Total], <span class="dax-fn">ALL</span>(hecho_ventas_propiedades[canal_venta])),<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="dax-num">0</span><br>
+          &nbsp;&nbsp;)
+        </div>
+      </div>
+      <div class="dax-section">
+        <span class="dax-comment">-- Tabla calendario creada dinámicamente</span>
+        <div class="dax-code">
+          <span class="dax-var">dim_fecha</span> =<br>
+          <span class="dax-fn">ADDCOLUMNS</span>(<br>
+          &nbsp;&nbsp;<span class="dax-fn">CALENDAR</span>(<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="dax-fn">MIN</span>(hecho_ventas_propiedades[fecha_venta]),<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="dax-fn">MAX</span>(hecho_ventas_propiedades[fecha_venta])<br>
+          &nbsp;&nbsp;),<br>
+          &nbsp;&nbsp;<span class="dax-str">"Año"</span>, <span class="dax-fn">YEAR</span>([Date]),<br>
+          &nbsp;&nbsp;<span class="dax-str">"Mes"</span>, <span class="dax-fn">FORMAT</span>([Date], <span class="dax-str">"MMMM"</span>),<br>
+          &nbsp;&nbsp;<span class="dax-str">"Mes_Numero"</span>, <span class="dax-fn">MONTH</span>([Date]),<br>
+          &nbsp;&nbsp;<span class="dax-str">"Año_Mes"</span>, <span class="dax-fn">FORMAT</span>([Date], <span class="dax-str">"YYYY-MM"</span>)<br>
+          )
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- ─── INSIGHTS ACCIONABLES ─── -->
+<div class="section">
+  <div class="section-tag">Recomendaciones ejecutivas</div>
+  <h2>Cuatro insights<br><em>accionables</em></h2>
+  <div class="insights">
+    <div class="insight featured">
+      <div class="insight-n">01</div>
+      <div>
+        <strong>Segmento "Primera vez" — diseñar para retener</strong>
+        <p>Concentra el mayor volumen de compradores. Financiamientos flexibles, acompañamiento post-venta y comunicaciones diferenciadas pueden convertir estos compradores en recurrentes, aumentando el LTV.</p>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">02</div>
+      <div>
+        <strong>Replicar la cohorte de marzo 2023</strong>
+        <p>Mayor recurrencia de compra de todo el período. Analizar sus características de adquisición (canal, ciudad, tipo de propiedad) puede informar toda la estrategia de captación 2025–2026.</p>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">03</div>
+      <div>
+        <strong>Evaluar margen neto Corredor vs Directo</strong>
+        <p>Corredor domina en volumen (72.7%) pero implica mayores comisiones. Comparar el margen neto real de ambos canales puede revelar si conviene invertir en fortalecer el canal Directo.</p>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="insight-n">04</div>
+      <div>
+        <strong>Crecer en México — paridad con Colombia</strong>
+        <p>4,123 ventas en CDMX vs 4,377 en Bogotá: mercados casi parejos. México tiene margen para cerrar esa brecha y convertirse en el mercado líder con la estrategia correcta de captación.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-t">Ver el dashboard completo</div>
+      <div class="footer-s">Power BI interactivo y notebook de planificación disponibles</div>
+    </div>
+    <div class="footer-btns">
+      <a href="https://app.powerbi.com/view?r=eyJrIjoiOTk5NmVhYTQtNTUyMi00MGExLWIyNDItYjNkODkxYjVmNzQ0IiwidCI6ImY5NGJmNGQ5LTgwOTctNDc5NC1hZGY2LWE1NDY2Y2EyODU2MyIsImMiOjR9" target="_blank" class="btn-white">Power BI Dashboard</a>
+      <a href="https://colab.research.google.com/drive/1ExPBLFtuD6xTcBzFCy4YeweP5Rccl0B5?usp=sharing" target="_blank" class="btn-outline-w">Notebook Colab</a>
+      <a href="https://www.linkedin.com/in/sebastianamayada" target="_blank" class="btn-outline-w">LinkedIn</a>
+    </div>
+  </div>
+  <div class="copyright" style="max-width:1100px;margin:0 auto;padding-top:28px;margin-top:40px;border-top:1px solid rgba(255,255,255,0.07)">
+    <span>Sebastián Amaya · Analista de Datos · Bootcamp TripleTen 2025–2026</span>
+    <span>Grupo Andes Inmobiliario · Dashboard Comercial 2023–2024</span>
+  </div>
+</footer>
+
+</body>
+</html>
